@@ -3,7 +3,7 @@
     "Author": "Solterax",
     "Name": "SubMaterialNQ",
     "InternalName": "SubMaterialNQ",
-    "AssemblyVersion": "0.1.0.0",
+    "AssemblyVersion": "0.1.1.0",
     "Description": "Lower the quality of whitelisted items in your personal inventory.",
     "ApplicableVersion": "any",
     "RepoUrl": "https://github.com/Solterax/SubMaterialNQ",
@@ -21,8 +21,8 @@
     "AcceptsFeedback": true,
     "IsHide": false,
     "IsTestingExclusive": false,
-    "DownloadLinkInstall": "https://github.com/Solterax/SubMaterialNQ/releases/download/v0.1.0/SubMaterialNQ-plugin.zip",
-    "DownloadLinkUpdate": "https://github.com/Solterax/SubMaterialNQ/releases/download/v0.1.0/SubMaterialNQ-plugin.zip",
-    "LastUpdate": "1795350821"
+    "DownloadLinkInstall": "https://github.com/Solterax/SubMaterialNQ/releases/download/v0.1.1/SubMaterialNQ-plugin.zip",
+    "DownloadLinkUpdate": "https://github.com/Solterax/SubMaterialNQ/releases/download/v0.1.1/SubMaterialNQ-plugin.zip",
+    "LastUpdate": "1795384838"
   }
 ]

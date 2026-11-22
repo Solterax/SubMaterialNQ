@@ -7,7 +7,7 @@ SubMaterialNQ is a standalone Dalamud plugin that lowers the quality of whitelis
 1. Install SubMaterialNQ from [Solterax's Dalamud catalogue](https://github.com/Solterax/DalamudPlugins).
 2. Enable Lower Quality in your auto-confirm plugin.
 3. Open `/submaterialnq`. Search by item name or ID to add items, or use **Remove** beside a whitelist entry. **Restore defaults** replaces the list with the original 76 entries.
-4. Click **Lower Quality** while idle. Keep the bags undisturbed until the run finishes. **Stop after current item** lets a submitted request finish before stopping.
+4. Click **Lower Quality** or run `/tonq` while idle. The command runs without opening the window and prints the result in chat. Keep the bags undisturbed until the run finishes. **Stop after current item** in the window lets a submitted request finish before stopping.
 
 The whitelist uses base item IDs and is saved locally. **Coel Stern** is listed by its in-game name, **Coelacanth-class Stern**. It stays on the default list, but the plugin only acts on HQ or collectable inventory entries.
 

@@ -10,12 +10,14 @@ namespace SubMaterialNQ;
 
 public sealed class Plugin : IDalamudPlugin
 {
-    private const string Command = "/submaterialnq";
+    private const string SettingsCommand = "/submaterialnq";
+    private const string RunCommand = "/tonq";
     private const long ReadyTimeoutMs = 3000;
     private const long UpdateTimeoutMs = 5000;
 
     [PluginService] private static IDalamudPluginInterface PluginInterface { get; set; } = null!;
     [PluginService] private static ICommandManager Commands { get; set; } = null!;
+    [PluginService] private static IChatGui Chat { get; set; } = null!;
     [PluginService] private static IFramework Framework { get; set; } = null!;
     [PluginService] private static IClientState Client { get; set; } = null!;
     [PluginService] private static IPlayerState Player { get; set; } = null!;
@@ -35,6 +37,7 @@ public sealed class Plugin : IDalamudPlugin
     private int skipped;
     private bool startRequested;
     private bool stopRequested;
+    private bool reportInChat;
 
     internal Configuration Config { get; }
     internal bool Running => startRequested || remaining != null;
@@ -50,7 +53,8 @@ public sealed class Plugin : IDalamudPlugin
             .ToDictionary(item => item.RowId, item => item.Name);
         window = new MainWindow(this);
         windows.AddWindow(window);
-        Commands.AddHandler(Command, new CommandInfo(OnCommand) { HelpMessage = "Open SubMaterialNQ." });
+        Commands.AddHandler(SettingsCommand, new CommandInfo(OnSettingsCommand) { HelpMessage = "Open SubMaterialNQ." });
+        Commands.AddHandler(RunCommand, new CommandInfo(OnRunCommand) { HelpMessage = "Lower the quality of whitelisted items in your personal inventory." });
         PluginInterface.UiBuilder.Draw += windows.Draw;
         PluginInterface.UiBuilder.OpenMainUi += Open;
         PluginInterface.UiBuilder.OpenConfigUi += Open;
@@ -63,11 +67,19 @@ public sealed class Plugin : IDalamudPlugin
         PluginInterface.UiBuilder.Draw -= windows.Draw;
         PluginInterface.UiBuilder.OpenMainUi -= Open;
         PluginInterface.UiBuilder.OpenConfigUi -= Open;
-        Commands.RemoveHandler(Command);
+        Commands.RemoveHandler(SettingsCommand);
+        Commands.RemoveHandler(RunCommand);
         windows.RemoveAllWindows();
     }
 
-    private void OnCommand(string command, string args) => Open();
+    private void OnSettingsCommand(string command, string args) => Open();
+
+    private void OnRunCommand(string command, string args)
+    {
+        if (!Start(inChat: true))
+            Chat.Print("A Lower Quality run is already active.", "SubMaterialNQ");
+    }
+
     private void Open() => window.IsOpen = true;
 
     internal string ItemName(uint id) => itemNames.GetValueOrDefault(id, $"Item #{id}");
@@ -98,10 +110,14 @@ public sealed class Plugin : IDalamudPlugin
         PluginInterface.SavePluginConfig(Config);
     }
 
-    internal void Start()
+    internal bool Start(bool inChat = false)
     {
-        if (!Running)
-            startRequested = true;
+        if (Running)
+            return false;
+
+        reportInChat = inChat;
+        startRequested = true;
+        return true;
     }
 
     internal void Stop() => stopRequested = true;
@@ -132,7 +148,7 @@ public sealed class Plugin : IDalamudPlugin
                 converted = skipped = 0;
                 if (!InventoryAccessible() || !CanSubmit())
                 {
-                    Finish("Open SubMaterialNQ while your character is idle.");
+                    Finish("Start the run while your character is idle.");
                     return;
                 }
 
@@ -220,5 +236,10 @@ public sealed class Plugin : IDalamudPlugin
         submitted = null;
         stopRequested = false;
         Status = $"{message} Converted {converted} stack(s). Skipped {skipped}.";
+        if (reportInChat)
+        {
+            reportInChat = false;
+            Chat.Print(Status, "SubMaterialNQ");
+        }
     }
 }
