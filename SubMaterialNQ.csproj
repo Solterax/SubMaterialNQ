@@ -1,0 +1,15 @@
+<Project Sdk="Dalamud.NET.Sdk/15.0.0">
+  <PropertyGroup>
+    <Version>0.1.0.0</Version>
+    <Author>Solterax</Author>
+    <Name>SubMaterialNQ</Name>
+    <InternalName>SubMaterialNQ</InternalName>
+    <Description>Lower the quality of whitelisted items in your personal inventory.</Description>
+    <Punchline>Convert whitelisted submarine materials to normal quality.</Punchline>
+    <RepoUrl>https://github.com/Solterax/SubMaterialNQ</RepoUrl>
+    <Tags>inventory;submarine;crafting</Tags>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+</Project>
